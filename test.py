@@ -1,24 +1,34 @@
 import asyncio
-import aiohttp as aiohttp
+import aiohttp
 
 
-async def start_client(url):
+    async def start_client(url):
 
-    session = aiohttp.ClientSession()
-    async with session.ws_connect(url) as ws:
+        session = aiohttp.ClientSession()
+        async with session.ws_connect(url) as ws:
 
-        async for msg in ws:
-            print(msg.json())
-            if msg.type == aiohttp.WSMsgType.TEXT:
-                if msg.data == 'close cmd':
-                    await ws.close()
+            async for msg in ws:
+
+                # Connected
+                if msg.type == aiohttp.WSMsgType.TEXT:
+
+                    json_msg = msg.json()
+                    # First connection message
+                    if 'version' in json_msg and 'limit' in json_msg:
+
+                        if json_msg['limit']['remaining'] > 0:
+                            await ws.send_str('{"op": "subscribe", "args": ["trade:XBTUSD"]}')
+                        else:
+                            # Error
+                            print(json_msg)
+
+                    else:
+                        # Print result
+                        print(json_msg)
+                elif msg.type == aiohttp.WSMsgType.CLOSED:
                     break
-                else:
-                    await ws.send_str('{"op": "subscribe", "args": ["orderBookL2:XBTUSD"]}')
-            elif msg.type == aiohttp.WSMsgType.CLOSED:
-                break
-            elif msg.type == aiohttp.WSMsgType.ERROR:
-                break
+                elif msg.type == aiohttp.WSMsgType.ERROR:
+                    break
 
 
 if __name__ == '__main__':
