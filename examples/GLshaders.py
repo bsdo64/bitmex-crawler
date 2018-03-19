@@ -56,7 +56,7 @@ w.addItem(m5)
 
 m6 = gl.GLMeshItem(meshdata=md, smooth=True, color=(1, 1, 1, 1), shader='heightColor', glOptions='opaque')
 m6.translate(x[5], 0, 0)
-m6.scale(1, 1, 2)
+m6.scale(1, 1, 1)
 w.addItem(m6)
 
 

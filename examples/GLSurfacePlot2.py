@@ -23,24 +23,28 @@ w.setWindowTitle('pyqtgraph example: GLSurfacePlot')
 w.setCameraPosition(distance=50)
 
 ## Add a grid to the view
-g = gl.GLGridItem()
-g.scale(2,2,1)
-g.setDepthValue(10)  # draw grid after surfaces since they may be translucent
-w.addItem(g)
+gx = gl.GLGridItem()
+gx.rotate(90, 0, 1, 0)
+gx.translate(-10, 0, 0)
+w.addItem(gx)
+gy = gl.GLGridItem()
+gy.rotate(90, 1, 0, 0)
+gy.translate(0, -10, 0)
+w.addItem(gy)
+gz = gl.GLGridItem()
+gz.setSize(100, 100, 100)
+gz.translate(0, 0, -10)
+w.addItem(gz)
 
-xyz = np.array(np.random.random((50, 3)))
-x = xyz[:, 0]
-y = xyz[:, 1]
-z = xyz[:, 2]
+df = pd.read_csv('../test.csv', header=None)
+x = np.arange(df.shape[1]-1)
+y = np.arange(df.shape[0])
+z = df.iloc[:,1:]
 
-df = pd.DataFrame({'x': x, 'y': y, 'z': z})
-x1 = np.linspace(df['x'].min(), df['x'].max(), len(df['x'].unique()))
-y1 = np.linspace(df['y'].min(), df['y'].max(), len(df['y'].unique()))
-
-x2, y2 = np.meshgrid(x1, y1)
-z2 = griddata((df['x'], df['y']), df['z'], (x2, y2), method='linear')
-
-p1 = gl.GLSurfacePlotItem(z=z2, shader='shaded', color=(0.5, 0.5, 1, 1))
+p1 = gl.GLSurfacePlotItem(x=x, y=y, z=z.transpose(), shader='shaded', color=(0.5, 0.5, 1, 1))
+p1.translate(0, 0, -9000)
+scale = 1/10
+p1.scale(scale, scale, scale/100, local=False)
 w.addItem(p1)
 
 

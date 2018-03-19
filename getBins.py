@@ -33,7 +33,7 @@ if __name__ == '__main__':
     tasks = []
     loop = asyncio.get_event_loop()
 
-    for x in range(0, 60):
+    for x in range(0, 10):
         tasks.append(start_client(requestUrl, params))
 
     loop.run_until_complete(asyncio.wait(tasks))

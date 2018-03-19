@@ -14,7 +14,7 @@ import numpy as np
 
 ## Create a GL View widget to display data
 app = QtGui.QApplication([])
-import pyqtgraph.opengl as gl
+
 
 w = gl.GLViewWidget()
 w.show()

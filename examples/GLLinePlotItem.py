@@ -27,7 +27,7 @@ gy = gl.GLGridItem()
 gy.rotate(90, 1, 0, 0)
 gy.translate(0, -10, 0)
 w.addItem(gy)
-gz = gl.GLGridItem()
+gz = gl.GLGrFidItem()
 gz.translate(0, 0, -10)
 w.addItem(gz)
 
